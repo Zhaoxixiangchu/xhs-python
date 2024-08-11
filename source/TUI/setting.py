@@ -37,7 +37,7 @@ class Setting(Screen):
             Label(self.message("作品文件储存文件夹名称"), classes="params", ),
             Input(self.data["folder_name"], placeholder="Download", id="folder_name", ),
             Label(self.message("作品文件名称格式"), classes="params", ),
-            Input(self.data["name_format"], placeholder=self.message("发布时间 作者昵称 作品标题"), valid_empty=True,
+            Input(self.data["name_format"], placeholder=self.message("publishedTime authorNickName productTitle"), valid_empty=True,
                   id="name_format", ),
             Label(self.message("Sec-Ch-Ua"), classes="params", ),
             Input(self.data["sec_ch_ua"], placeholder=self.message("内置 Chrome Sec-Ch-Ua"), valid_empty=True,

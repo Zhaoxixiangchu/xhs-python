@@ -25,19 +25,19 @@ __all__ = ["Manager"]
 class Manager:
     NAME = compile(r"[^\u4e00-\u9fffa-zA-Z0-9-_！？，。；：“”（）《》]")
     NAME_KEYS = (
-        '收藏数量',
-        '评论数量',
-        '分享数量',
-        '点赞数量',
-        '作品标签',
-        '作品ID',
-        '作品标题',
-        '作品描述',
-        '作品类型',
-        '发布时间',
-        '最后更新时间',
-        '作者昵称',
-        '作者ID',
+        'favoriteCount',
+        'commentCount',
+        'shareCount',
+        'likeCount',
+        'productTags',
+        'productId',
+        'productTitle',
+        'productDesc',
+        'productType',
+        'publishedTime',
+        'lastUpdateDate',
+        'authorNickName',
+        'authorId',
     )
     NO_PROXY = {
         "http://": None,
@@ -180,7 +180,7 @@ class Manager:
         keys = format_.split()
         return next(
             (
-                "发布时间 作者昵称 作品标题"
+                "publishedTime authorNickName productTitle"
                 for key in keys
                 if key not in self.NAME_KEYS
             ),

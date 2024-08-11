@@ -61,24 +61,25 @@ class IDRecorder:
 
 class DataRecorder(IDRecorder):
     DATA_TABLE = (
-        ("采集时间", "TEXT"),
-        ("作品ID", "TEXT PRIMARY KEY"),
-        ("作品类型", "TEXT"),
-        ("作品标题", "TEXT"),
-        ("作品描述", "TEXT"),
-        ("作品标签", "TEXT"),
-        ("发布时间", "TEXT"),
-        ("最后更新时间", "TEXT"),
-        ("收藏数量", "TEXT"),
-        ("评论数量", "TEXT"),
-        ("分享数量", "TEXT"),
-        ("点赞数量", "TEXT"),
-        ("作者昵称", "TEXT"),
-        ("作者ID", "TEXT"),
-        ("作者链接", "TEXT"),
-        ("作品链接", "TEXT"),
-        ("下载地址", "TEXT"),
-        ("动图地址", "TEXT"),
+        #collectTime 采集时间
+        ("collectTime", "TEXT"),
+        ("productId", "TEXT PRIMARY KEY"),
+        ("productType", "TEXT"),
+        ("productTitle", "TEXT"),
+        ("productDesc", "TEXT"),
+        ("productTags", "TEXT"),
+        ("publishedTime", "TEXT"),
+        ("lastUpdateDate", "TEXT"),
+        ("favoriteCount", "TEXT"),
+        ("commentCount", "TEXT"),
+        ("shareCount", "TEXT"),
+        ("likeCount", "TEXT"),
+        ("authorNickName", "TEXT"),
+        ("authorId", "TEXT"),
+        ("authorUrl", "TEXT"),
+        ("productUrl", "TEXT"),
+        ("downloadUrl", "TEXT"),
+        ("dynamicPhotoUrl", "TEXT"),
     )
 
     def __init__(self, manager: Manager):

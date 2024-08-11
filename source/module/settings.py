@@ -15,7 +15,7 @@ class Settings:
     default = {
         "work_path": "",
         "folder_name": "Download",
-        "name_format": "发布时间 作者昵称 作品标题",
+        "name_format": "publishedTime  authorNickName productTitle",
         "sec_ch_ua": SEC_CH_UA,
         "sec_ch_ua_platform": SEC_CH_UA_PLATFORM,
         "user_agent": USERAGENT,

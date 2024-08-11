@@ -12,3 +12,4 @@ class ExtractData(BaseModel):
     message: str
     url: str
     data: dict | None
+    code: int
