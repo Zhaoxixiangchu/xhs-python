@@ -36,7 +36,7 @@ class Setting(Screen):
             Label(_("作品文件储存文件夹名称"), classes="params", ),
             Input(self.data["folder_name"], placeholder="Download", id="folder_name", ),
             Label(_("作品文件名称格式"), classes="params", ),
-            Input(self.data["name_format"], placeholder="发布时间 作者昵称 作品标题", valid_empty=True,
+            Input(self.data["name_format"], placeholder="publishedTime authorNickName productTitle", valid_empty=True,
                   id="name_format", ),
             Label("User-Agent", classes="params", ),
             Input(self.data["user_agent"], placeholder=_("内置 Chrome User Agent"), valid_empty=True,

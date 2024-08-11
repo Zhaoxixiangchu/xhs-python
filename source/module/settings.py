@@ -13,7 +13,7 @@ class Settings:
     default = {
         "work_path": "",
         "folder_name": "Download",
-        "name_format": "发布时间 作者昵称 作品标题",
+        "name_format": "publishedTime  authorNickName productTitle",
         "user_agent": USERAGENT,
         "cookie": "",
         "proxy": None,

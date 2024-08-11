@@ -50,11 +50,11 @@ __all__ = ["XHS"]
 def _data_cache(function):
     async def inner(self, data: dict, ):
         if self.manager.record_data:
-            download = data["下载地址"]
-            lives = data["动图地址"]
+            download = data["downloadUrl"]
+            lives = data["dynamicPhotoUrl"]
             await function(self, data, )
-            data["下载地址"] = download
-            data["动图地址"] = lives
+            data["downloadUrl"] = download
+            data["dynamicPhotoUrl"] = lives
 
     return inner
 
@@ -78,7 +78,7 @@ class XHS:
             self,
             work_path="",
             folder_name="Download",
-            name_format="发布时间 作者昵称 作品标题",
+            name_format="publishedTime authorNickName productTitle",
             user_agent: str = None,
             cookie: str = None,
             proxy: str | dict = None,
@@ -135,12 +135,12 @@ class XHS:
         self.server = None
 
     def __extract_image(self, container: dict, data: Namespace):
-        container["下载地址"], container["动图地址"] = self.image.get_image_link(
+        container["downloadUrl"], container["dynamicPhotoUrl"] = self.image.get_image_link(
             data, self.manager.image_format)
 
     def __extract_video(self, container: dict, data: Namespace):
-        container["下载地址"] = self.video.get_video_link(data)
-        container["动图地址"] = [None, ]
+        container["downloadUrl"] = self.video.get_video_link(data)
+        container["dynamicPhotoUrl"] = [None, ]
 
     async def __download_files(
             self,
@@ -151,17 +151,17 @@ class XHS:
             bar,
     ):
         name = self.__naming_rules(container)
-        if (u := container["下载地址"]) and download:
-            if await self.skip_download(i := container["作品ID"]):
+        if (u := container["downloadUrl"]) and download:
+            if await self.skip_download(i := container["productId"]):
                 logging(
                     log, _("作品 {0} 存在下载记录，跳过下载").format(i))
             else:
                 path, result = await self.download.run(
                     u,
-                    container["动图地址"],
+                    container["dynamicPhotoUrl"],
                     index,
                     name,
-                    container["作品类型"],
+                    container["productType"],
                     log,
                     bar,
                 )
@@ -172,9 +172,9 @@ class XHS:
 
     @_data_cache
     async def save_data(self, data: dict, ):
-        data["采集时间"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data["下载地址"] = " ".join(data["下载地址"])
-        data["动图地址"] = " ".join(i or "NaN" for i in data["动图地址"])
+        data["collectTime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data["downloadUrl"] = " ".join(data["downloadUrl"])
+        data["dynamicPhotoUrl"] = " ".join(i or "NaN" for i in data["dynamicPhotoUrl"])
         await self.data_recorder.add(**data)
 
     async def __add_record(self, id_: str, result: list) -> None:
@@ -255,12 +255,12 @@ class XHS:
         if not data:
             logging(log, _("{0} 提取数据失败").format(i), ERROR)
             return {}
-        if data["作品类型"] == _("视频"):
+        if data["productType"] == _("视频"):
             self.__extract_video(data, namespace)
-        elif data["作品类型"] == _("图文"):
+        elif data["productType"] == _("图文"):
             self.__extract_image(data, namespace)
         else:
-            data["下载地址"] = []
+            data["downloadUrl"] = []
         await self.__download_files(data, download, index, log, bar)
         logging(log, _("作品处理完成：{0}").format(i))
         await sleep_time()
@@ -280,11 +280,11 @@ class XHS:
         values = []
         for key in keys:
             match key:
-                case "发布时间":
+                case "publishedTime":
                     values.append(self.__get_name_time(data))
-                case "作者昵称":
+                case "authorNickName":
                     values.append(self.__get_name_author(data))
-                case "作品标题":
+                case "productTitle":
                     values.append(self.__get_name_title(data))
                 case _:
                     values.append(data[key])
@@ -292,8 +292,8 @@ class XHS:
             self.CLEANER.filter_name(
                 self.manager.SEPARATE.join(values),
                 default=self.manager.SEPARATE.join((
-                    data["作者ID"],
-                    data["作品ID"],
+                    data["authorId"],
+                    data["productId"],
                 )),
             ),
             length=128,
@@ -301,16 +301,16 @@ class XHS:
 
     @staticmethod
     def __get_name_time(data: dict) -> str:
-        return data["发布时间"].replace(":", ".")
+        return data["publishedTime"].replace(":", ".")
 
     def __get_name_author(self, data: dict) -> str:
-        return self.manager.filter_name(data["作者昵称"]) or data["作者ID"]
+        return self.manager.filter_name(data["authorNickName"]) or data["authorId"]
 
     def __get_name_title(self, data: dict) -> str:
         return beautify_string(
-            self.manager.filter_name(data["作品标题"]),
+            self.manager.filter_name(data["productTitle"]),
             64,
-        ) or data["作品ID"]
+        ) or data["productId"]
 
     async def monitor(
             self,
@@ -440,8 +440,10 @@ class XHS:
         @self.server.post("/xhs/", response_model=ExtractData, )
         async def handle(extract: ExtractParams):
             url = await self.__extract_links(extract.url, None)
+            code = 200
             if not url:
                 msg = _("提取小红书作品链接失败")
+                code = 500
                 data = None
             else:
                 if data := await self.__deal_extract(
@@ -456,8 +458,10 @@ class XHS:
                     msg = _("获取小红书作品数据成功")
                 else:
                     msg = _("获取小红书作品数据失败")
+                    code = 500
                     data = None
             return ExtractData(
                 message=msg,
                 url=url[0] if url else extract.url,
-                data=data)
+                data=data,
+                code=code)
