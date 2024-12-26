@@ -1,0 +1,21 @@
+{
+    "work_path": "",
+    "folder_name": "Download",
+    "name_format": "publishedTime  authorNickName productTitle",
+    "sec_ch_ua": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
+    "sec_ch_ua_platform": "\"Windows\"",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "cookie": "",
+    "proxy": null,
+    "timeout": 10,
+    "chunk": 2097152,
+    "max_retry": 5,
+    "record_data": false,
+    "image_format": "PNG",
+    "image_download": true,
+    "video_download": true,
+    "live_download": false,
+    "folder_mode": false,
+    "download_record": true,
+    "language": "zh_CN"
+}
