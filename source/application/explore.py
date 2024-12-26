@@ -43,7 +43,7 @@ class Explore:
 
     def __extract_info(self, container: dict, data: Namespace):
         container["productId"] = data.safe_extract("noteId")
-        container["productUrl"] = f"https://www.xiaohongshu.com/explore/{container["作品ID"]}"
+        container["productUrl"] = f"https://www.xiaohongshu.com/explore/{container["productId"]}"
         container["productTitle"] = data.safe_extract("title")
         container["productDesc"] = data.safe_extract("desc")
         container["productType"] = self.explore_type.get(
